@@ -1,0 +1,17 @@
+@use "variables";
+@use "header";
+@use "home";
+@use "login";
+@use "results";
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: arial;
+    font-weight: 400;
+}
+
+body{
+    background-color: variables.$dark-gray;
+    color: variables.$light-gray;
+}

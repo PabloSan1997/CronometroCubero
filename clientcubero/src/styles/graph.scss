@@ -1,0 +1,14 @@
+@use "variables" as *;
+
+
+
+.title.title_graph {
+    margin:1rem auto 1.3rem;
+    width: fit-content;
+}
+
+.area_graph {
+    width: 60%;
+    height: fit-content;
+    background: $background-secondary;
+}

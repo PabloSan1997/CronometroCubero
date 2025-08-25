@@ -1,0 +1,53 @@
+
+
+@use "variables";
+@use "sass:color";
+
+.login{
+    width: min(95%, 30rem);
+    margin:4rem auto 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid variables.$border-color;
+    border-radius: 10px;
+    background-color: variables.$background-secondary;
+    h2{
+        margin-bottom: 0.5rem;
+        margin-inline: auto;
+        color: variables.$light-gray;
+    }
+    label{
+        font-size: 1rem;
+        margin-bottom: 0.4rem;
+        color: variables.$light-gray;
+    }
+    input{
+        outline: none;
+        padding: 0.3rem;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid variables.$border-color;
+        background-color: variables.$dark-gray;
+        color: variables.$light-gray;
+        &:focus{
+            border-color: variables.$rubik-blue;
+            box-shadow: 0 0 5px rgba(variables.$rubik-blue, 0.5);
+        }
+    }
+    button{
+        margin: auto;
+        padding: 0.2rem 1rem;
+        cursor: pointer;
+        background-color: variables.$rubik-blue;
+        color: variables.$rubik-white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        &:hover{
+            background-color: color.adjust(variables.$rubik-blue, $lightness: 10%);
+        }
+    }
+}

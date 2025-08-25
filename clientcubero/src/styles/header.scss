@@ -1,0 +1,49 @@
+
+@use "variables";
+@use "sass:color";
+
+header{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    background-color: variables.$dark-gray;
+    color: variables.$rubik-white;
+    h1{
+        margin:auto 2rem;
+        font-weight: bold;
+        color: variables.$rubik-yellow;
+    }
+    nav{
+        width: fit-content;
+        margin: auto auto auto 0;
+        font-size: 1rem;
+        a{
+            margin-left: 1rem;
+            color: variables.$rubik-white;
+            text-decoration: none;
+            &:hover{
+                color: variables.$rubik-yellow;
+            }
+        }
+    }
+    .area_user_info{
+        margin: auto 2rem auto auto;
+        display: flex;
+        span{
+            margin-right: 1rem;
+            font-weight: bold; 
+        }
+    }  
+    button{
+        margin: auto 2rem auto 0;
+        background-color: variables.$rubik-blue;
+        color: variables.$rubik-white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        &:hover{
+            background-color: color.adjust(variables.$rubik-blue, $lightness: 10%);
+        }
+    } 
+}

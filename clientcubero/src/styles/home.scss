@@ -1,0 +1,139 @@
+@use "variables";
+@use "sass:color";
+
+.area_cronometro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .algoritm {
+        font-size: 20px;
+        margin: auto;
+        margin-bottom: 0.5rem;
+        width: 50rem;
+        text-align: center;
+        cursor: pointer;
+        padding: 0.5rem 0;
+        background-color: variables.$background-secondary;
+        border-radius: 5px;
+        color: variables.$light-gray;
+        border: 1px solid variables.$border-color;
+    }
+
+    .time {
+        font-size: 6rem;
+        margin: auto;
+        color: variables.$light-gray;
+    }
+}
+
+.title.title_solve {
+    font-size: 2rem;
+    width: 95%;
+    margin: 1rem auto 1rem auto;
+    font-weight: bold;
+    font-size: 1.7rem;
+    color: variables.$light-gray;
+
+    &.title_presolves {
+        font-size: 1.5rem;
+        font-weight: 400;
+    }
+}
+
+.area_table {
+    width: fit-content;
+    display: flex;
+    margin: auto;
+
+     tbody tr.tr_presolves.hover_delete{
+            cursor: pointer;
+            &:hover{
+               background: rgba(139, 139, 139, 0.288);
+            }
+        }
+    &.area_table_results {
+        width: 90%;
+        margin-bottom: 2rem;
+
+        position: relative;
+
+        button {
+            position: absolute;
+            right: 0;
+            padding: 0.2rem;
+            border-radius: 5px;
+            background-color: variables.$rubik-green;
+            color: variables.$rubik-white;
+            border: none;
+            cursor: pointer;
+
+            &:hover {
+                background-color: color.adjust(variables.$rubik-green, $lightness: 10%);
+            }
+        }
+    }
+
+    .table_solves {
+        border-collapse: collapse;
+        text-align: center;
+        width: 40rem;
+        background-color: variables.$background-secondary;
+        border: 1px solid variables.$border-color;
+
+        th,
+        td {
+            padding: 0.3rem;
+
+            &.td_algoritm {
+                text-align: left;
+            }
+        }
+
+        th {
+            background-color: variables.$background-secondary;
+            color: variables.$light-gray;
+
+            &.num {
+                width: 10%;
+            }
+
+            &.algoritmo {
+                width: 75%;
+            }
+
+            &.tiempo {
+                width: 15%;
+            }
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: variables.$dark-gray;
+        }
+
+    }
+
+    .finalresults {
+        height: fit-content;
+        margin-left: 10rem;
+        border-collapse: collapse;
+        text-align: center;
+        width: 20rem;
+        border: 1px solid variables.$border-color;
+
+        th {
+            background-color: variables.$rubik-red;
+            color: variables.$rubik-white;
+            padding: 0.5rem;
+        }
+
+        td {
+            padding: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: variables.$dark-gray;
+        }
+    }
+}

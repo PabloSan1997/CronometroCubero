@@ -1,0 +1,81 @@
+.area_table {
+    width: fit-content;
+    display: flex;
+    margin: auto;
+    &.area_table_results{
+        width: 90%;
+        margin-bottom: 2rem;
+        position: relative;
+        button{
+            position: absolute;
+            right: 0;
+            padding: 0.2rem;
+            border-radius: 5px;
+            background-color: variables.$rubik-green;
+            color: variables.$rubik-white;
+            border: none;
+            cursor: pointer;
+            &:hover{
+                background-color: color.adjust(variables.$rubik-green, $lightness: 10%);
+            }
+        }
+    }
+    .table_solves {
+        border-collapse: collapse;
+        text-align: center;
+        width: 40rem;
+        background-color: variables.$background-secondary;
+        border: 1px solid variables.$border-color;
+        th,td {
+            padding: 0.3rem;
+
+            &.td_algoritm {
+                text-align: left;
+                cursor: pointer;
+            }
+        }
+        th{
+            background-color: variables.$background-secondary;
+            color: variables.$light-gray;
+            &.num{
+                width: 10%;
+            }
+            &.algoritmo{
+                width: 75%;
+            }
+            &.tiempo{
+                width: 15%;
+            }
+        }
+        tbody tr:nth-child(odd) {
+            background-color: variables.$dark-gray;
+        }
+        tbody tr{
+            cursor: pointer;
+            &:hover{
+                background-color: color.adjust(variables.$dark-gray, $lightness: 10%);
+            }
+        }
+    }
+
+    .finalresults {
+        height: fit-content;
+        margin-left: 10rem;
+        border-collapse: collapse;
+        text-align: center;
+        width: 20rem;
+        border: 1px solid variables.$border-color;
+        th{
+            background-color: variables.$rubik-red;
+            color: variables.$rubik-white;
+            padding: 0.5rem;
+        }
+        td{
+            padding: 0.5rem;
+            font-size: 1.2rem;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: variables.$dark-gray;
+        }
+    }
+}

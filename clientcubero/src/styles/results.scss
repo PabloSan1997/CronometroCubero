@@ -1,0 +1,73 @@
+
+
+@use "variables";
+@use "sass:color";
+
+.results_nav{
+    width: fit-content;
+    margin:1rem auto 2rem;
+    a{
+        margin: auto 5rem;
+        color: variables.$light-gray;
+        text-decoration: none;
+        font-size: 1.2rem;
+        &:hover{
+            color: variables.$rubik-blue;
+        }
+    }
+}
+h2.title.title_solve{
+   margin-bottom: 2rem;
+}
+
+.area_graph{
+    width: 90%;
+    height: 30rem;
+    margin: auto;
+    background-color: variables.$background-secondary;
+    border: 1px solid variables.$border-color;
+    border-radius: 10px;
+    padding: 1rem;
+}
+.area_table.area_table_results{
+    margin-top: 2rem;
+}
+.table_solves{
+    width: 100%;
+}
+.finalresults{
+    width: 20rem;
+    margin-left: 2rem;
+}
+.area_stadistics{
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    .area_stadistic{
+        width: 15rem;
+        height: 10rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        color: variables.$rubik-white;
+        h3{
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        p{
+            font-size: 2rem;
+        }
+        &:nth-child(1){
+            background-color: variables.$rubik-red;
+        }
+        &:nth-child(2){
+            background-color: variables.$rubik-green;
+        }
+        &:nth-child(3){
+            background-color: variables.$rubik-orange;
+        }
+    }
+}
