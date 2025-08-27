@@ -50,4 +50,7 @@
             background-color: color.adjust(variables.$rubik-blue, $lightness: 10%);
         }
     }
+    .message{
+        margin-top: 1rem;
+    }
 }

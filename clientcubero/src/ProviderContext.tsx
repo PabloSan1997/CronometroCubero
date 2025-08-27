@@ -1,5 +1,6 @@
 import React from "react";
 import { logstorage } from "./utils/logstorage";
+import { userapi } from "./api/userapi";
 
 const AppContext = React.createContext<IAppContext>({
   userInfo: { username: "", nickname: "" },
@@ -10,6 +11,10 @@ const AppContext = React.createContext<IAppContext>({
   logout: function (): void {
     throw new Error("Function not implemented.");
   },
+  message: "",
+  setMessage: function (msg: string): void {
+    throw new Error("Function not implemented." + msg);
+  },
 });
 
 export function ProviderContext({ children }: { children: React.ReactNode }) {
@@ -18,20 +23,30 @@ export function ProviderContext({ children }: { children: React.ReactNode }) {
     username: "",
     nickname: "",
   });
-
+  const [message, setMessage] = React.useState<string>("");
   React.useEffect(() => {
     if (jwt) {
-      setUserInfo({ username: "usuario", nickname: "El usuario" });
-    }else{
-        logout();
+      userapi
+        .getUserInfo(jwt)
+        .then(setUserInfo)
+        .catch(() => {
+          logout();
+        });
+    } else {
+      logout();
     }
   }, [jwt]);
 
   const login = (data: LoginDto) => {
-    console.log("login", data);
-    setUserInfo({ username: data.username, nickname: "El nuevo usuario" });
-    setJwt("token");
-    logstorage.save("token");
+    setMessage('');
+    userapi.login(data).then(res => {
+      setJwt(res.jwt);
+      logstorage.save(res.jwt);
+      setMessage('');
+    }).catch(err=>{
+      const {message} = err as ErrorDto;
+      setMessage(message);
+    });
   };
   const logout = () => {
     setUserInfo({ username: "", nickname: "" });
@@ -39,11 +54,12 @@ export function ProviderContext({ children }: { children: React.ReactNode }) {
     logstorage.save("");
   };
   return (
-    <AppContext.Provider value={{ userInfo, jwt, login, logout }}>
+    <AppContext.Provider
+      value={{ userInfo, jwt, login, logout, message, setMessage }}
+    >
       {children}
     </AppContext.Provider>
   );
 }
-
 
 export const UseAppContext = () => React.useContext(AppContext);

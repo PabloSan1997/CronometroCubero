@@ -1,13 +1,15 @@
 import { UseAppContext } from "@/ProviderContext";
 import "../styles/header.scss";
 import { HeaderNav } from "./HeaderNav";
+import logo from '/logo.svg';
 
 export function Header() {
   const {jwt, logout, userInfo} = UseAppContext();
   const { username, nickname } = userInfo;
+
   return (
     <header>
-      <h1>Mi cronometro</h1>
+      <h1><img src={logo} alt="logo" className="logo"/> <span>Mi Cronometro</span></h1>
       {jwt?.trim() && (
         <>
           <HeaderNav />

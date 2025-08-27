@@ -5,7 +5,17 @@ interface IAppContext{
     jwt:string;
     login(data:LoginDto):void;
     logout():void;
+    message:string;
+    setMessage(msg:string):void;
 }
+
+interface ErrorDto{
+    statusCode:number;
+    message:string;
+    error:string;
+    timestamp:string;
+}
+
 
 interface UserInfo{
     username:string;
@@ -35,12 +45,12 @@ interface PreFinalResults{
 
 interface FinalResults extends PreFinalResults{
     solves:ISolve[];
-    id:number;
-    date:string;  
+    id:string;
+    createdAt:string;  
 }
 
 interface FinalResultGraph{
-    date:string;
+    createdAt:string;
     avg5:number;
     media:number;
 }

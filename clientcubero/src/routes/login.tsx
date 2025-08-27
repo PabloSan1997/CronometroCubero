@@ -13,34 +13,38 @@ const loginDataInit: LoginDto = {
 };
 
 function RouteComponent() {
-  const { jwt, login } = UseAppContext();
+  const { jwt, login, message, setMessage } = UseAppContext();
   const [logdata, setLogData] = React.useState<LoginDto>(loginDataInit);
   const loginsumit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!logdata.username.trim() || !logdata.password.trim()) {
+      setMessage("Rellena todos los campos");
+      return;
+    }
     login(logdata);
   };
-  if(jwt?.trim())
-    return <Navigate to="/results" />;
+  if (jwt?.trim()) return <Navigate to="/results" />;
   return (
     <form className="login" onSubmit={loginsumit}>
       <h2>Login</h2>
       <label htmlFor="usernameinput">Username</label>
-      <input 
-      type="text" 
-      placeholder="Escribir"
-       id="usernameinput" 
-       value={logdata.username}
-       onChange={e=>setLogData({...logdata, username: e.target.value})}
-       />
+      <input
+        type="text"
+        placeholder="Escribir"
+        id="usernameinput"
+        value={logdata.username}
+        onChange={(e) => setLogData({ ...logdata, username: e.target.value })}
+      />
       <label htmlFor="passwordinput">Contraseña</label>
-      <input 
-      type="password" 
-      placeholder="Escribir" 
-      id="passwordinput"
-      value={logdata.password}
-      onChange={e=>setLogData({...logdata, password: e.target.value})}
-       />
+      <input
+        type="password"
+        placeholder="Escribir"
+        id="passwordinput"
+        value={logdata.password}
+        onChange={(e) => setLogData({ ...logdata, password: e.target.value })}
+      />
       <button type="submit">Entrar</button>
+      {message && <p className="message">{message}</p>}
     </form>
   );
 }
