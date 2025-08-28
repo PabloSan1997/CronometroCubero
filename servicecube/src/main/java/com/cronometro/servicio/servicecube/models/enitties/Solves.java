@@ -24,7 +24,7 @@ public class Solves {
     @Column(length = 68)
     private String algoritm;
     @ManyToOne
-    @JoinTable(name = "id_finalsolve")
+    @JoinColumn(name = "id_finalsolve")
     @JsonIgnore
     private FinalResutls finalResutls;
 }

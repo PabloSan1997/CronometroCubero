@@ -17,6 +17,10 @@ import {
 import { Line } from "react-chartjs-2";
 import { ViewIsLogin } from "@/components/ViewIsLogin";
 import { obtenerFormatoMilisegundos } from "@/utils/obtenerFormatoMilisegundos";
+import { useQuery } from "@tanstack/react-query";
+import { UseAppContext } from "@/ProviderContext";
+import { cronoapi } from "@/api/cronoapi";
+import { getLocalTime } from "@/utils/getLocalTime";
 
 ChartJS.register(
   CategoryScale,
@@ -103,16 +107,19 @@ const options = {
   },
 };
 
-const finalSolves: FinalResultGraph[] = [
-  { createdAt: "2023-01-01", avg5: 544421, media: 154441 },
-  { createdAt: "2023-02-01", avg5: 1554315, media: 15158 },
-  { createdAt: "2023-03-01", avg5: 11875, media: 1452855 },
-  { createdAt: "2023-04-01", avg5: 88768, media: 9654654 },
-  { createdAt: "2023-05-01", avg5: 254654, media: 365454 },
-];
+
 
 function RouteComponent() {
-  const labels = finalSolves.map((solve) => solve.createdAt);
+  const {jwt} = UseAppContext();
+  
+  const {data:datagraph, isError, isFetched, isPending} = useQuery({
+    queryKey:['graph', jwt],
+    queryFn:()=>cronoapi.findGraphValues(jwt)
+  });
+  
+  const finalSolves:FinalResultGraph[] = !isError && isFetched && !isPending?datagraph:[];
+  
+  const labels = finalSolves.map((solve) => getLocalTime(solve.createdAt));
   const avg5Data = finalSolves.map((solve) => solve.avg5);
   const mediaData = finalSolves.map((solve) => solve.media);
   return (

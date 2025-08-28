@@ -26,6 +26,7 @@ public class FinalResutls {
     private Double max;
     private Double min;
     private Double media;
+    private Double avg5;
     @Column(name = "created_at")
     private Date createdAt;
     @OneToMany(mappedBy = "finalResutls")

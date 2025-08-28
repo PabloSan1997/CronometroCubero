@@ -1,8 +1,6 @@
 package com.cronometro.servicio.servicecube.controller;
 
-import com.cronometro.servicio.servicecube.exceptions.BasicNotFoundException;
-import com.cronometro.servicio.servicecube.exceptions.IdInvalidException;
-import com.cronometro.servicio.servicecube.exceptions.UsernamePasswordException;
+import com.cronometro.servicio.servicecube.exceptions.*;
 import com.cronometro.servicio.servicecube.models.dtos.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,8 @@ public class ExceptionController {
 
     @ExceptionHandler({
             IdInvalidException.class,
-            UsernamePasswordException.class
+            UsernamePasswordException.class,
+            SolvesBadRequestException.class
     })
     public ResponseEntity<?> badRequest(Exception e){
         return generateError(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -32,5 +31,12 @@ public class ExceptionController {
     })
     public ResponseEntity<?> notfound(Exception e){
         return generateError(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler({
+            AuthJwtException.class
+    })
+    public ResponseEntity<?> unauthorized(Exception e){
+        return generateError(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 }
