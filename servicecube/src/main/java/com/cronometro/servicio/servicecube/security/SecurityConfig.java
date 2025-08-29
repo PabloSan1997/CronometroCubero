@@ -55,7 +55,8 @@ public class SecurityConfig {
                                 "/api/user/userinfo"
                         ).hasRole("USER")
                         .requestMatchers(
-                                "/cronoconnect"
+                                "/cronoconnect", "/", "/assets", "/assets/**", "/login",
+                                "logo.svg", "index.html", "/home", "/results", "/graph/results"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

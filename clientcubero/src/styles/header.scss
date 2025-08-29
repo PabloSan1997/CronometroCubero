@@ -1,48 +1,62 @@
-
 @use "variables";
 @use "sass:color";
 
-header{
+header {
     width: 100%;
     height: 60px;
     display: flex;
     background-color: variables.$dark-gray;
     color: variables.$rubik-white;
-    h1{
-        margin:auto 2rem;
+
+    h1 {
+        margin: auto 2rem;
         display: flex;
-        span{
-             font-weight: bold;
-        color: variables.$rubik-yellow;
+
+        span {
+            font-weight: bold;
+            color: variables.$rubik-yellow;
         }
-        img{
+
+        img {
             width: 2.2rem;
             margin-right: 0.5rem;
 
         }
     }
-    nav{
+
+    nav {
         width: fit-content;
         margin: auto auto auto 0;
         font-size: 1rem;
-        a{
+
+        a {
             margin-left: 1rem;
             color: variables.$rubik-white;
             text-decoration: none;
-            &:hover{
+             padding-bottom: 0.2rem;
+            &:hover {
                 color: variables.$rubik-yellow;
+            }
+
+            &.active {
+                color: variables.$rubik-yellow;
+                border-bottom: 1px solid variables.$rubik-yellow;
+               
             }
         }
     }
-    .area_user_info{
+
+    .area_user_info {
         margin: auto 2rem auto auto;
         display: flex;
-        span{
+
+        span {
             margin-right: 1rem;
-            font-weight: bold; 
+            font-weight: bold;
         }
-    }  
-    button{
+    }
+
+    button {
         margin: auto 2rem auto 0;
         background-color: variables.$rubik-blue;
         color: variables.$rubik-white;
@@ -50,8 +64,9 @@ header{
         padding: 0.5rem 1rem;
         border-radius: 5px;
         cursor: pointer;
-        &:hover{
+
+        &:hover {
             background-color: color.adjust(variables.$rubik-blue, $lightness: 10%);
         }
-    } 
+    }
 }

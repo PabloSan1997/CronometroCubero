@@ -12,7 +12,11 @@
         text-decoration: none;
         font-size: 1.2rem;
         &:hover{
-            color: variables.$rubik-blue;
+            color: variables.$rubik-yellow;
+        }
+        &.active{
+             color: variables.$rubik-yellow;
+             border-bottom: 1px solid variables.$rubik-yellow;
         }
     }
 }

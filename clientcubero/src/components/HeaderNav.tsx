@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 
 
 export function HeaderNav() {
-
+  
   return (
     <nav>
         <Link to="/home">Cronometro</Link>

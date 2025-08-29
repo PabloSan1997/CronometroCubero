@@ -1,7 +1,7 @@
 import { apiprops } from "./apiprops";
 
 async function findSolves(jwt: string, queryname:TypeOfRequest): Promise<FinalResults[]> {
-    const ft = await fetch(`${apiprops.baseUrl}/cronometro/${queryname}`, {
+    const ft = await fetch(`${apiprops.baseUrl}/cronometro/${queryname}?size=100`, {
         method: "GET",
         headers: {
             Authorization: `Bearer ${jwt}`,
