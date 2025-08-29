@@ -6,10 +6,7 @@ export function obtenerFormatoMilisegundos(milisegundos: number): string {
   const centesimas = Math.floor(milisegundos % 1000);
 
   const minutosStr = minutos > 0 ? `${minutos}` : "0";
-  const segundosStr =
-    minutos > 0
-      ? segundos.toString().padStart(2, "0")
-      : segundos.toString();
+  const segundosStr = segundos.toString().padStart(2, "0");
   const centesimasStr = centesimas.toString().padStart(3, "0");
 
   return `${minutosStr}:${segundosStr}.${centesimasStr}`;

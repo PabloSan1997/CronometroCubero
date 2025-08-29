@@ -27,6 +27,7 @@ async function saveSolve(jwt: string, data: ListPresolve): Promise<FinalResults>
         method: "POST",
         headers: {
             Authorization: `Bearer ${jwt}`,
+            'Content-Type':'application/json'
         },
         body: JSON.stringify(data),
     });

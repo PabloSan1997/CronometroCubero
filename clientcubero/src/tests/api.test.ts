@@ -8,7 +8,7 @@ const userdeprueba = {
     password:'hola123'
 }
 
-const tokentest = 'eyJhbGciOiJIUzM4NCJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwibmlja25hbWUiOiJTb3kgdW4gdGVzdCIsInN1YiI6InNveXRlc3QiLCJpYXQiOjE3NTYzMzIxMzEsImV4cCI6MTc1NjQxODUzMX0.4V_GyFZDYVVo8cRIiT9keL126SANMR2MLL4_CA6m87bAI_9jfa9rY6q18PcoKQF8';
+let tokentest:string;
 
 
 describe('Pruebas para comunicar con el servidor', ()=>{
@@ -16,6 +16,7 @@ describe('Pruebas para comunicar con el servidor', ()=>{
         it('login', async ()=>{
             const {username, password} = userdeprueba;
             const res = await userapi.login({username, password});
+            tokentest = res.jwt;
             expect(res).toMatchObject({
                 jwt: expect.any(String)
             });

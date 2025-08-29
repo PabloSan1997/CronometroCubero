@@ -54,6 +54,9 @@ public class SecurityConfig {
                                 HttpMethod.GET,
                                 "/api/user/userinfo"
                         ).hasRole("USER")
+                        .requestMatchers(
+                                "/cronoconnect"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

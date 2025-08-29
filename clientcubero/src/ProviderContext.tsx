@@ -1,8 +1,14 @@
 import React from "react";
 import { logstorage } from "./utils/logstorage";
 import { userapi } from "./api/userapi";
+import { Client } from "@stomp/stompjs";
+import { apiprops } from "./api/apiprops";
 
-const AppContext = React.createContext<IAppContext>({
+interface IAppContextFull extends IAppContext {
+  stompClient: Client;
+}
+
+const AppContext = React.createContext<IAppContextFull>({
   userInfo: { username: "", nickname: "" },
   jwt: "",
   login: function (data: LoginDto): void {
@@ -15,6 +21,7 @@ const AppContext = React.createContext<IAppContext>({
   setMessage: function (msg: string): void {
     throw new Error("Function not implemented." + msg);
   },
+  stompClient: new Client(),
 });
 
 export function ProviderContext({ children }: { children: React.ReactNode }) {
@@ -24,6 +31,18 @@ export function ProviderContext({ children }: { children: React.ReactNode }) {
     nickname: "",
   });
   const [message, setMessage] = React.useState<string>("");
+  const stompref = React.useRef(new Client());
+
+  React.useEffect(() => {
+    if (jwt.trim() && userInfo.username.trim()) {
+      stompref.current.brokerURL = `${apiprops.baseSocket}?jwt=${jwt}`;
+    }
+
+    return () => {
+      stompref.current.brokerURL = "";
+    };
+  }, [jwt, userInfo.username]);
+
   React.useEffect(() => {
     if (jwt) {
       userapi
@@ -38,24 +57,36 @@ export function ProviderContext({ children }: { children: React.ReactNode }) {
   }, [jwt]);
 
   const login = (data: LoginDto) => {
-    setMessage('');
-    userapi.login(data).then(res => {
-      setJwt(res.jwt);
-      logstorage.save(res.jwt);
-      setMessage('');
-    }).catch(err=>{
-      const {message} = err as ErrorDto;
-      setMessage(message);
-    });
+    setMessage("");
+    userapi
+      .login(data)
+      .then((res) => {
+        setJwt(res.jwt);
+        logstorage.save(res.jwt);
+        setMessage("");
+      })
+      .catch((err) => {
+        const { message } = err as ErrorDto;
+        setMessage(message);
+      });
   };
   const logout = () => {
     setUserInfo({ username: "", nickname: "" });
     setJwt("");
     logstorage.save("");
+    stompref.current.deactivate();
   };
   return (
     <AppContext.Provider
-      value={{ userInfo, jwt, login, logout, message, setMessage }}
+      value={{
+        userInfo,
+        jwt,
+        login,
+        logout,
+        message,
+        setMessage,
+        stompClient: stompref.current,
+      }}
     >
       {children}
     </AppContext.Provider>

@@ -14,7 +14,7 @@ public interface CronoService {
     List<FinalResutls> findByBestAVG5(Pageable pageable);
     List<FinalResutls> findByWorstAvg5(Pageable pageable);
     List<GraphDto> findGraphData();
-    void deleteById(UUID id, String username);
+    boolean deleteById(UUID id, String username);
     FinalResutls saveResult(ListPreSolvesDto listPreSolvesDto);
 
 }

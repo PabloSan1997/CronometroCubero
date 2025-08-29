@@ -27,6 +27,43 @@
     }
 }
 
+.area_title {
+    display: flex;
+    width: 95%;
+
+    .title.title_solve {
+        width: fit-content;
+    }
+}
+
+.area_title_button {
+    width: 95%;
+    margin: 1rem auto 1rem auto;
+    display: flex;
+    .title.title_solve {
+        width: fit-content;
+        margin: 0;  
+    }
+    .boton.add_boton{
+        margin-left: 1rem;
+        padding: 0.2rem 1rem;
+        border: none;
+        border-radius: 5px;
+        background-color: variables.$rubik-blue;
+        color: variables.$rubik-white;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
+        font-weight: bold;
+        &:hover{
+            background-color: color.adjust(variables.$rubik-blue, $lightness: 15%);
+            box-shadow: 0 0 10px color.adjust(variables.$rubik-blue, $alpha: -0.5);
+        }
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+}
+
 .title.title_solve {
     font-size: 2rem;
     width: 95%;
@@ -52,15 +89,27 @@
     button {
         position: absolute;
         right: 0;
-        padding: 0.2rem;
-        border-radius: 5px;
+        top: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: none;
         background-color: variables.$rubik-green;
         color: variables.$rubik-white;
-        border: none;
         cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
 
         &:hover {
             background-color: color.adjust(variables.$rubik-green, $lightness: 10%);
+            box-shadow: 0 0 8px color.adjust(variables.$rubik-green, $alpha: -0.5);
+        }
+
+        &:active {
+            transform: scale(0.9);
         }
     }
 

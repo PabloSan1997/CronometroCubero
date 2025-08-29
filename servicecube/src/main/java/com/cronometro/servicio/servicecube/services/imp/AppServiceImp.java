@@ -72,10 +72,13 @@ public class AppServiceImp implements CronoService {
 
     @Override
     @Transactional
-    public void deleteById(UUID id, String username) {
-        finalResultRepository.findByIdAndUsername(id, username).ifPresent(p -> {
-            finalResultRepository.deleteById(p.getId());
-        });
+    public boolean deleteById(UUID id, String username) {
+        var opfinalsolve = finalResultRepository.findByIdAndUsername(id, username);
+        if(opfinalsolve.isPresent()){
+            finalResultRepository.deleteById(opfinalsolve.get().getId());
+            return true;
+        }
+        return false;
     }
 
     @Override

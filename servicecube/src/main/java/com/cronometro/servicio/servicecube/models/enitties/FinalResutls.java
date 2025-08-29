@@ -29,7 +29,7 @@ public class FinalResutls {
     private Double avg5;
     @Column(name = "created_at")
     private Date createdAt;
-    @OneToMany(mappedBy = "finalResutls")
+    @OneToMany(mappedBy = "finalResutls", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Solves> solves;
     @ManyToOne
     @JoinColumn(name = "id_user")

@@ -60,7 +60,7 @@ public class RubikAlgorithmService {
             String letter = letters[index];
             if (!letter.equals(ant)) {
                 ant = letter;
-                alg.add(letter);
+                alg.add(pickTypeMove(letter));
             }
         }
         String fullalg = String.join(" ", alg);

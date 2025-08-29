@@ -1,15 +1,11 @@
 import { getLocalTime } from "@/utils/getLocalTime";
 import { obtenerFormatoMilisegundos } from "@/utils/obtenerFormatoMilisegundos";
 
-export function AreaResultTable({
-  finalresulst,
-}: {
-  finalresulst: FinalResults;
-}) {
-  const { max, media, min, avg5, solves, createdAt } = finalresulst;
+export function AreaResultTable({finalresulst, deleteOne}: {finalresulst: FinalResults, deleteOne(id:string):void}) {
+  const { max, media, min, avg5, solves, createdAt, id } = finalresulst;
   return (
     <div className="area_table_results">
-      <button>X</button>
+      <button onClick={()=>deleteOne(id)}>X</button>
       <h3>{getLocalTime(createdAt)}</h3>
       <div className="area_table">
         <table className="table_solves">
