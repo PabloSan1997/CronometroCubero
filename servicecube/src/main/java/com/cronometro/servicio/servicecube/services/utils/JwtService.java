@@ -23,7 +23,7 @@ public class JwtService {
     private String secretkey;
 
     private SecretKey getKey(){
-        byte[] ky = Decoders.BASE64URL.decode(secretkey);
+        byte[] ky = Decoders.BASE64.decode(secretkey);
         return Keys.hmacShaKeyFor(ky);
 //        return Jwts.SIG.HS256.key().build();
     }

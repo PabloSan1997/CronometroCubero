@@ -1,0 +1,15 @@
+
+services:
+
+  cuborrubikcronometro:
+    build: .
+    restart: always
+    env_file: ./.env
+    ports:
+      - 3008:3008
+    environment:
+      - URL_DB=$URL_DB_ENV
+      - USERNAME=$USERNAME_ENV
+      - PASSWORD=$PASSWORD_ENV
+      - JWT_KEY=$JWT_KEY_ENV
+      - PORT=3008
