@@ -3,6 +3,7 @@ package com.cronometro.servicio.servicecube.repositories;
 import com.cronometro.servicio.servicecube.models.dtos.GraphDto;
 import com.cronometro.servicio.servicecube.models.enitties.FinalResutls;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +28,8 @@ public interface FinalResultRepository extends CrudRepository<FinalResutls, UUID
 
     @Query("select f from FinalResutls f where f.id = :id and f.user.username = :username")
     Optional<FinalResutls> findByIdAndUsername(@Param("id") UUID id, @Param("username") String username);
+
+    @Modifying
+    @Query("delete from FinalResutls f where f.user.username=:username")
+    int deleteByUsername(@Param("username") String username);
 }

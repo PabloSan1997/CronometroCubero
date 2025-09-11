@@ -1,6 +1,7 @@
 package com.cronometro.servicio.servicecube.services;
 
 
+import com.cronometro.servicio.servicecube.models.dtos.DeleteAllDto;
 import com.cronometro.servicio.servicecube.models.dtos.GraphDto;
 import com.cronometro.servicio.servicecube.models.dtos.ListPreSolvesDto;
 import com.cronometro.servicio.servicecube.models.enitties.FinalResutls;
@@ -16,5 +17,5 @@ public interface CronoService {
     List<GraphDto> findGraphData();
     boolean deleteById(UUID id, String username);
     FinalResutls saveResult(ListPreSolvesDto listPreSolvesDto);
-
+    DeleteAllDto deleteAllSolves();
 }

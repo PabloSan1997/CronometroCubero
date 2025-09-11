@@ -25,16 +25,20 @@ function RouteComponent() {
     queryFn: () => cronoapi.findSolves(jwt, methodget),
   });
 
+  const deleteAll = () => {
+    if (confirm("¿Desea eliminar todo?")) cronoapi.deleteAll(jwt);
+  };
+
   React.useEffect(() => {
     if (data && data.length != 0) {
       setFresult(data);
-    }else{
+    } else {
       setFresult([]);
     }
 
-    return ()=>{
+    return () => {
       setFresult([]);
-    }
+    };
   }, [data?.length, mode]);
 
   const deleteOne = (id: string) => {
@@ -51,6 +55,10 @@ function RouteComponent() {
           const { id } = JSON.parse(req.body) as { id: string };
           setFresult((d) => d.filter((p) => p.id !== id));
         });
+        stompClient.subscribe("/user/deleteresult/deleteall", (res) => {
+          const total = Number(res.body);
+          if (total > 0) setFresult([]);
+        });
       };
       stompClient.activate();
     }
@@ -64,7 +72,13 @@ function RouteComponent() {
   return (
     <ViewIsLogin>
       <NavResult />
-      <h2 className="title title_solve">Resultados: {title}</h2>
+      <div className="area_titulo_pre">
+        <h2 className="title title_solve">Resultados: {title}</h2>
+        <button className="boton boton_all_delete" onClick={deleteAll}>
+          Delete all
+        </button>
+      </div>
+
       <div className="area_resutls">
         {isFetched &&
           !isError &&

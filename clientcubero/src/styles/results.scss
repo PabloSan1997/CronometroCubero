@@ -1,30 +1,59 @@
-
-
 @use "variables";
 @use "sass:color";
 
-.results_nav{
+.results_nav {
     width: fit-content;
-    margin:1rem auto 2rem;
-    a{
+    margin: 1rem auto 2rem;
+
+    a {
         margin: auto 5rem;
         color: variables.$light-gray;
         text-decoration: none;
         font-size: 1.2rem;
-        &:hover{
+
+        &:hover {
             color: variables.$rubik-yellow;
         }
-        &.active{
-             color: variables.$rubik-yellow;
-             border-bottom: 1px solid variables.$rubik-yellow;
+
+        &.active {
+            color: variables.$rubik-yellow;
+            border-bottom: 1px solid variables.$rubik-yellow;
         }
     }
 }
-h2.title.title_solve{
-   margin-bottom: 2rem;
+
+.area_titulo_pre {
+    width: 95%;
+    margin: 0 auto 2rem;
+    display: flex;
+    h2.title.title_solve {
+        margin: 0;
+        width: fit-content;
+    }
+
+    .boton_all_delete {
+        padding: 0.2rem 1rem;
+        border: none;
+        margin-left: 1rem;
+        border-radius: 5px;
+        background-color: variables.$rubik-blue;
+        color: variables.$rubik-white;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
+        font-weight: bold;
+
+        &:hover {
+            background-color: color.adjust(variables.$rubik-blue, $lightness: 15%);
+            box-shadow: 0 0 10px color.adjust(variables.$rubik-blue, $alpha: -0.5);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
 }
 
-.area_graph{
+.area_graph {
     width: 90%;
     height: 30rem;
     margin: auto;
@@ -33,22 +62,27 @@ h2.title.title_solve{
     border-radius: 10px;
     padding: 1rem;
 }
-.area_table.area_table_results{
+
+.area_table.area_table_results {
     margin-top: 2rem;
 }
-.table_solves{
+
+.table_solves {
     width: 100%;
 }
-.finalresults{
+
+.finalresults {
     width: 20rem;
     margin-left: 2rem;
 }
-.area_stadistics{
+
+.area_stadistics {
     width: 90%;
     margin: auto;
     display: flex;
     justify-content: space-around;
-    .area_stadistic{
+
+    .area_stadistic {
         width: 15rem;
         height: 10rem;
         display: flex;
@@ -57,20 +91,25 @@ h2.title.title_solve{
         align-items: center;
         border-radius: 10px;
         color: variables.$rubik-white;
-        h3{
+
+        h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
-        p{
+
+        p {
             font-size: 2rem;
         }
-        &:nth-child(1){
+
+        &:nth-child(1) {
             background-color: variables.$rubik-red;
         }
-        &:nth-child(2){
+
+        &:nth-child(2) {
             background-color: variables.$rubik-green;
         }
-        &:nth-child(3){
+
+        &:nth-child(3) {
             background-color: variables.$rubik-orange;
         }
     }

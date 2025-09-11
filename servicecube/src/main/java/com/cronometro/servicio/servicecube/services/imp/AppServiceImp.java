@@ -3,6 +3,7 @@ package com.cronometro.servicio.servicecube.services.imp;
 
 import com.cronometro.servicio.servicecube.exceptions.AuthJwtException;
 import com.cronometro.servicio.servicecube.exceptions.SolvesBadRequestException;
+import com.cronometro.servicio.servicecube.models.dtos.DeleteAllDto;
 import com.cronometro.servicio.servicecube.models.dtos.GraphDto;
 import com.cronometro.servicio.servicecube.models.dtos.ListPreSolvesDto;
 import com.cronometro.servicio.servicecube.models.dtos.PreSolveDto;
@@ -106,5 +107,15 @@ public class AppServiceImp implements CronoService {
         var res = (List<Solves>) solveRepository.saveAll(solves);
         finalResutlssave.setSolves(res);
         return finalResultRepository.findById(finalResutlssave.getId()).orElseThrow();
+    }
+
+    @Override
+    @Transactional
+    public DeleteAllDto deleteAllSolves() {
+        var user = getAuthentication();
+        int numsolves = solveRepository.deleteByUsername(user.getUsername());
+        if(numsolves==0) return DeleteAllDto.builder().total(0).username(user.getUsername()).build();
+        int totoal = finalResultRepository.deleteByUsername(user.getUsername());
+        return DeleteAllDto.builder().total(totoal).username(user.getUsername()).build();
     }
 }

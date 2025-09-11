@@ -7,6 +7,7 @@ import com.cronometro.servicio.servicecube.services.CronoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.List;
 public class CuboController {
     @Autowired
     private CronoService cronoService;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @GetMapping("/graph")
     public ResponseEntity<?> findGrap(){
@@ -42,4 +45,10 @@ public class CuboController {
         return ResponseEntity.status(201).body(cronoService.saveResult(preSolvesDto));
     }
 
+    @DeleteMapping("/deleteall")
+    public ResponseEntity<?> deleteAll(){
+        var res = cronoService.deleteAllSolves();
+        simpMessagingTemplate.convertAndSendToUser(res.getUsername(), "/deleteresult/deleteall", res.getTotal());
+        return ResponseEntity.noContent().build();
+    }
 }

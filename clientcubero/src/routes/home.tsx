@@ -12,7 +12,7 @@ export const Route = createFileRoute("/home")({
 
 function RouteComponent() {
   const [presolves, setPresolves] = React.useState<PreSolve[]>([]);
-
+  const [showButton, setShowButton] = React.useState(true);
   const deletePreolve = (i: number) => {
     const newpresolves = presolves.filter((_p, index) => index !== i);
     setPresolves(newpresolves);
@@ -37,7 +37,7 @@ function RouteComponent() {
         <h2 className="title title_solve title_presolves">
           <span onClick={() => setPresolves([])}>Resultados</span>
         </h2>
-        {presolves.length == 5 && (<ButtonAddNewSolve solves={presolves}/>)}
+        {presolves.length == 5 && showButton && (<ButtonAddNewSolve setShowButton={setShowButton} solves={presolves}/>)}
       </div>
       <PreResutltsTeble solves={presolves} deletePreolve={deletePreolve} />
     </ViewIsLogin>

@@ -1,4 +1,3 @@
-
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "./styles/index.scss";
@@ -34,11 +33,11 @@ const rootElement = document.getElementById("app");
 if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-      <QueryClientProvider client={queryClient}>
-            <ProviderContext>
+    <QueryClientProvider client={queryClient}>
+      <ProviderContext>
         <RouterProvider router={router} />
       </ProviderContext>
-      </QueryClientProvider>
+    </QueryClientProvider>
   );
 }
 

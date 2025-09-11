@@ -35,6 +35,14 @@ async function saveSolve(jwt: string, data: ListPresolve): Promise<FinalResults>
     return ft.json();
 }
 
+async function deleteAll(jwt:string):Promise<void>{
+    const ft = await fetch(`${apiprops.baseUrl}/cronometro/deleteall`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${jwt}`,
+        }
+    });
+    if (!ft.ok) throw (await ft.json()) as ErrorDto;
+}
 
-
-export const cronoapi = { findSolves, saveSolve, findGraphValues };
+export const cronoapi = { findSolves, saveSolve, findGraphValues, deleteAll };
