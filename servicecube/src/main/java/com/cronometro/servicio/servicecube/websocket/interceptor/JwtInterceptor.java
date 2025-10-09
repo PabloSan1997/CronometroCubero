@@ -26,9 +26,9 @@ public class JwtInterceptor implements HandshakeInterceptor {
             String jwt = reqServlet.getServletRequest().getParameter("jwt");
             if(jwt == null) return false;
             try{
-                var userDetailsDto = jwtService.validate(jwt);
-                attributes.put("username", userDetailsDto.getUsername());
-                return userRepository.findByUsername(userDetailsDto.getUsername()).isPresent();
+                var username = jwtService.validateSocket(jwt).getUsername();
+                attributes.put("username", username);
+                return userRepository.findByUsername(username).isPresent();
             }catch (Exception ignore){
                 return false;
             }

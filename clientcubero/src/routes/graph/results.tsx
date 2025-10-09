@@ -110,11 +110,23 @@ const options = {
 
 
 function RouteComponent() {
-  const {jwt} = UseAppContext();
+  const {jwt, refresh} = UseAppContext();
   
+  const findValuesRefresh = async (jwt1:string)=> {
+    try {
+      return await cronoapi.findGraphValues(jwt1);
+    } catch (error) {
+      if(error == "reinicio"){
+        const newjwt = await refresh();
+        return await cronoapi.findGraphValues(newjwt);
+      }
+      return [];
+    }
+  }
+
   const {data:datagraph, isError, isFetched, isPending} = useQuery({
     queryKey:['graph', jwt],
-    queryFn:()=>cronoapi.findGraphValues(jwt)
+    queryFn:()=>findValuesRefresh(jwt)
   });
   
   const finalSolves:FinalResultGraph[] = !isError && isFetched && !isPending?datagraph:[];

@@ -9,19 +9,22 @@ export function ButtonAddNewSolve({
   solves: PreSolve[];
   setShowButton(a: boolean): void;
 }) {
+  const { refresh } = UseAppContext();
   const { jwt } = UseAppContext();
   const navigate = useNavigate();
-  const saveResults = () => {
+  const saveResults = async () => {
     setShowButton(false);
-    cronoapi
-      .saveSolve(jwt, { presolves: solves })
-      .then(() => {
+    try {
+      await cronoapi.saveSolve(jwt, { presolves: solves });
+      navigate({ to: "/results", search: "date" });
+    } catch (error) {
+      if (error == "reinicio") {
+        const newjwt = await refresh();
+        await cronoapi.saveSolve(newjwt, { presolves: solves });
         navigate({ to: "/results", search: "date" });
-      })
-      .catch((e) => {
-        console.log(e);
-        setShowButton(true);
-      });
+      }
+      setShowButton(true);
+    }
   };
   return (
     <button className="boton add_boton" onClick={saveResults}>

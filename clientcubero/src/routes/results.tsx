@@ -17,16 +17,42 @@ export const Route = createFileRoute("/results")({
 function RouteComponent() {
   const { mode } = Route.useSearch() as { mode: string };
   const { title, isCorrectMode } = viewResutlsQuery(mode);
-  const { jwt, stompClient } = UseAppContext();
+  const { jwt, stompClient, refresh } = UseAppContext();
   const [fresult, setFresult] = React.useState<FinalResults[]>([]);
   const methodget = defineOrder(mode);
+
+  const findSolveView = async (
+    mode1: TypeOfRequest,
+    jwt1: string
+  ): Promise<FinalResults[]> => {
+    try {
+      const data = await cronoapi.findSolves(jwt1, mode1);
+      return data;
+    } catch (error) {
+      if (error == "reinicio") {
+        const jwtnew = await refresh();
+        const data = await cronoapi.findSolves(jwtnew, mode1);
+        return data;
+      }
+      return [];
+    }
+  };
   const { data, isFetched, isError, isPending } = useQuery({
-    queryKey: ["viewresults", mode, jwt],
-    queryFn: () => cronoapi.findSolves(jwt, methodget),
+    queryKey: ["viewresults", methodget, jwt],
+    queryFn: () => findSolveView(methodget, jwt),
   });
 
-  const deleteAll = () => {
-    if (confirm("¿Desea eliminar todo?")) cronoapi.deleteAll(jwt);
+  const deleteAll = async () => {
+    if (confirm("¿Desea eliminar todo?")) {
+      try {
+        await cronoapi.deleteAll(jwt);
+      } catch (err) {
+        if (err == "reinicio") {
+          const jwtnew = await refresh();
+          await cronoapi.deleteAll(jwtnew);
+        }
+      }
+    }
   };
 
   React.useEffect(() => {

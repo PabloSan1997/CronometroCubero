@@ -44,7 +44,10 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/user/login",
-                                "/api/user/register"
+                                "/api/user/register",
+                                "/api/user/refreshauth",
+                                "/api/user/gettokensocket",
+                                "/api/user/logout"
                         ).permitAll()
                         .requestMatchers(
                                 "/api/cronometro",

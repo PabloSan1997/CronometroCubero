@@ -40,6 +40,9 @@ public class Users {
     private List<Roles> roles;
     @OneToMany(mappedBy = "user")
     private List<FinalResutls> finalResutls;
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Logins> logins;
 
     @PrePersist
     public void prepresist(){

@@ -1,5 +1,4 @@
 import React from "react";
-import { logstorage } from "./utils/logstorage";
 import { userapi } from "./api/userapi";
 import { Client } from "@stomp/stompjs";
 import { apiprops } from "./api/apiprops";
@@ -14,46 +13,77 @@ const AppContext = React.createContext<IAppContextFull>({
   login: function (data: LoginDto): void {
     throw new Error("Function not implemented." + data);
   },
-  logout: function (): void {
-    throw new Error("Function not implemented.");
-  },
+
   message: "",
   setMessage: function (msg: string): void {
     throw new Error("Function not implemented." + msg);
   },
   stompClient: new Client(),
+  logout: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  refresh: function (): Promise<string> {
+    throw new Error("Function not implemented.");
+  }
 });
 
 export function ProviderContext({ children }: { children: React.ReactNode }) {
-  const [jwt, setJwt] = React.useState<string>(logstorage.read());
+  const [jwt, setJwt] = React.useState<string>("init");
+  const [jwtsocket, setJwtsocket] = React.useState<string>("init");
   const [userInfo, setUserInfo] = React.useState<UserInfo>({
     username: "",
     nickname: "",
   });
+
   const [message, setMessage] = React.useState<string>("");
   const stompref = React.useRef(new Client());
+  const refresh = async () => {
+    try {
+      const res = await userapi.refreshtoken();
+      setJwt(res.jwt);
+      return res.jwt;
+    } catch (error) {
+      setJwt("");
+      setUserInfo({ username: "", nickname: "" });
+      return '';
+    }
+  };
+  const refreshtoken = async () => {
+    try {
+      const jwttoken = await userapi.getsockettoken();
+      setJwtsocket(jwttoken.jwt);
+    } catch (error) {
+      setJwt("");
+    }
+  };
 
   React.useEffect(() => {
-    if (jwt.trim() && userInfo.username.trim()) {
-      stompref.current.brokerURL = `${apiprops.baseSocket}?jwt=${jwt}`;
+    refresh();
+    refreshtoken();
+  }, []);
+
+  React.useEffect(() => {
+    if (jwtsocket.trim() && userInfo.username.trim()) {
+      stompref.current.brokerURL = `${apiprops.baseSocket}?jwt=${jwtsocket}`;
     }
 
     return () => {
       stompref.current.brokerURL = "";
     };
-  }, [jwt, userInfo.username]);
+  }, [jwtsocket, userInfo.username]);
 
   React.useEffect(() => {
-    if (jwt) {
-      userapi
-        .getUserInfo(jwt)
-        .then(setUserInfo)
-        .catch(() => {
-          logout();
-        });
-    } else {
-      logout();
-    }
+    (async () => {
+      if (jwt && jwt != "init") {
+        try {
+          const res = await userapi.getUserInfo(jwt);
+          setUserInfo(res);
+        } catch (error) {
+          if(error ==  "reinicio")
+            refresh();
+        }
+      }
+    })();
   }, [jwt]);
 
   const login = (data: LoginDto) => {
@@ -62,23 +92,27 @@ export function ProviderContext({ children }: { children: React.ReactNode }) {
       .login(data)
       .then((res) => {
         setJwt(res.jwt);
-        logstorage.save(res.jwt);
         setMessage("");
+        refreshtoken();
       })
       .catch((err) => {
         const { message } = err as ErrorDto;
         setMessage(message);
       });
   };
-  const logout = () => {
-    setUserInfo({ username: "", nickname: "" });
-    setJwt("");
-    logstorage.save("");
-    stompref.current.deactivate();
+  const logout = async () => {
+    try {
+      await userapi.logout();
+      setUserInfo({ username: "", nickname: "" });
+      setJwt("");
+
+      stompref.current.deactivate();
+    } catch (error) {}
   };
   return (
     <AppContext.Provider
       value={{
+        refresh,
         userInfo,
         jwt,
         login,

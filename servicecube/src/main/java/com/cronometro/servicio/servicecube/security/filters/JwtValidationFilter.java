@@ -1,11 +1,15 @@
 package com.cronometro.servicio.servicecube.security.filters;
 
 
+import com.cronometro.servicio.servicecube.exceptions.TokenExpireException;
+import com.cronometro.servicio.servicecube.models.dtos.ErrorDto;
 import com.cronometro.servicio.servicecube.services.utils.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +43,18 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
                     userDetailsDto.getUsername(), null, userDetailsDto.getAuthorities()
             );
             SecurityContextHolder.getContext().setAuthentication(authtoken);
-        }catch (Exception ignore){}
-        chain.doFilter(request, response);
+            chain.doFilter(request, response);
+        }
+        catch (TokenExpireException e){
+            ErrorDto errorDto = new ErrorDto(HttpStatus.UNAUTHORIZED, e.getMessage());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(errorDto.getStatusCode());
+            response.getWriter().write(new ObjectMapper().writeValueAsString(errorDto));
+        }
+        catch (Exception e){
+            chain.doFilter(request, response);
+        }
+
     }
 }

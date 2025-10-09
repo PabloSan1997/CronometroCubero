@@ -2,9 +2,10 @@ interface IAppContext {
   userInfo: UserInfo;
   jwt: string;
   login(data: LoginDto): void;
-  logout(): void;
+  logout(): Promise<void>;
   message: string;
   setMessage(msg: string): void;
+  refresh():Promise<string>
 }
 
 interface ErrorDto {

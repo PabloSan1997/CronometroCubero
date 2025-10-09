@@ -5,6 +5,7 @@ import com.cronometro.servicio.servicecube.exceptions.UsernamePasswordException;
 import com.cronometro.servicio.servicecube.models.dtos.*;
 import com.cronometro.servicio.servicecube.models.enitties.Roles;
 import com.cronometro.servicio.servicecube.models.enitties.Users;
+import com.cronometro.servicio.servicecube.repositories.LoginRepository;
 import com.cronometro.servicio.servicecube.repositories.RoleRepository;
 import com.cronometro.servicio.servicecube.repositories.UserRepository;
 import com.cronometro.servicio.servicecube.services.UserService;
@@ -36,7 +37,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public TokenDto login(LoginDto loginDto) {
+    public LoginTokenDto login(LoginDto loginDto) {
         String username = loginDto.getUsername();
         String password = loginDto.getPassword();
         var authtoken = new UsernamePasswordAuthenticationToken(username, password);
@@ -44,7 +45,8 @@ public class UserServiceImp implements UserService {
             Authentication authentication = authenticationManager.authenticate(authtoken);
             var userdetailsdto = (UserDetailsDto) authentication.getPrincipal();
             String token = jwtService.sign(userdetailsdto);
-            return TokenDto.builder().jwt(token).build();
+            String refreshToken = jwtService.signrefresh(userRepository.findByUsername(username).orElseThrow());
+            return LoginTokenDto.builder().jwt(token).refreshToken(refreshToken).build();
         }
         catch (Exception ignore){
             throw new UsernamePasswordException("Username o password incorrectos");
@@ -54,7 +56,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public TokenDto register(RegisterDto registerDto) {
+    public LoginTokenDto register(RegisterDto registerDto) {
         var vuser = userRepository.findByUsername(registerDto.getUsername());
         if(vuser.isPresent())
             throw new UsernamePasswordException("Username ocupado");
@@ -83,5 +85,38 @@ public class UserServiceImp implements UserService {
                 .orElseThrow(()-> new IdInvalidException("no existe usuario autenticado"));
         return UserInfoDto.builder().nickname(user.getNickname())
                 .username(user.getUsername()).build();
+    }
+
+    @Override
+    @Transactional
+    public TokenDto reresh(String token) {
+        RefreshTokenDto refreshTokenDto = jwtService.validateRefresh(token);
+        Users user = userRepository.findByUsername(refreshTokenDto.getUsername()).orElseThrow(RuntimeException::new);
+        UserDetailsDto userDetailsDto = new UserDetailsDto();
+        userDetailsDto.setUsername(refreshTokenDto.getUsername());
+        userDetailsDto.setEnabled(user.getEnabled());
+        userDetailsDto.setNickname(user.getNickname());
+        userDetailsDto.setAuthoriteisAsRoles(user.getRoles());
+        String jwt = jwtService.sign(userDetailsDto);
+        return new TokenDto(jwt);
+    }
+
+    @Override
+    @Transactional
+    public TokenDto getSocketToken(String token) {
+        RefreshTokenDto refreshTokenDto = jwtService.validateRefresh(token);
+        Users user = userRepository.findByUsername(refreshTokenDto.getUsername()).orElseThrow(RuntimeException::new);
+        UserInfoDto userInfoDto = UserInfoDto.builder()
+                .nickname(user.getNickname()).username(user.getUsername()).build();
+        String jwt = jwtService.signSocket(userInfoDto);
+        return new TokenDto(jwt);
+    }
+
+    @Override
+    @Transactional
+    public void logout(String token) {
+        RefreshTokenDto refreshTokenDto = jwtService.validateRefresh(token);
+        Users user = userRepository.findByUsername(refreshTokenDto.getUsername()).orElseThrow(RuntimeException::new);
+        jwtService.logout(refreshTokenDto.getIdToken(), user);
     }
 }

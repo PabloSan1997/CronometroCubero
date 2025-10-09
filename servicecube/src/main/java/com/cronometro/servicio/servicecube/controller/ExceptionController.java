@@ -2,7 +2,9 @@ package com.cronometro.servicio.servicecube.controller;
 
 import com.cronometro.servicio.servicecube.exceptions.*;
 import com.cronometro.servicio.servicecube.models.dtos.ErrorDto;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,9 +36,29 @@ public class ExceptionController {
     }
 
     @ExceptionHandler({
-            AuthJwtException.class
+            AuthJwtException.class,
+            TokenExpireException.class
     })
     public ResponseEntity<?> unauthorized(Exception e){
         return generateError(HttpStatus.UNAUTHORIZED, e.getMessage());
+    }
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseEntity<?> refreshToken(RefreshTokenException e){
+        ResponseCookie cookie = ResponseCookie.from("mitoken", "")
+                .httpOnly(true)
+                .sameSite("Lax")
+                .secure(false) //https true
+                .maxAge(  0)
+                .path("/")
+                .build();
+        ErrorDto errorDto = new ErrorDto(HttpStatus.UNAUTHORIZED, e.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
+        return ResponseEntity.status(errorDto.getStatusCode()).headers(headers).body(errorDto);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> notholainformation(Exception e){
+        return generateError(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 }
