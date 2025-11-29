@@ -22,7 +22,7 @@ public class UserController {
         ResponseCookie cookie = ResponseCookie.from("mitoken", res.getRefreshToken())
                 .httpOnly(true)
                 .sameSite("Lax")
-                .secure(false) //https true
+                .secure(true) //https true
                 .maxAge(  60 * 60 * 24 * 7)
                 .path("/")
                 .build();
@@ -36,7 +36,7 @@ public class UserController {
         ResponseCookie cookie = ResponseCookie.from("mitoken", res.getRefreshToken())
                 .httpOnly(true)
                 .sameSite("Lax")
-                .secure(false) //https true
+                .secure(true) //https true
                 .maxAge(  60 * 60 * 24 * 7)
                 .path("/")
                 .build();
@@ -64,7 +64,7 @@ public class UserController {
         ResponseCookie cookie = ResponseCookie.from("mitoken", "")
                 .httpOnly(true)
                 .sameSite("Lax")
-                .secure(false) //https true
+                .secure(true) //https true
                 .maxAge(  0)
                 .path("/")
                 .build();
