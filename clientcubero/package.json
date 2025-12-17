@@ -18,9 +18,9 @@
     "@tanstack/react-router-devtools": "^1.131.5",
     "@tanstack/router-plugin": "^1.121.2",
     "chart.js": "^4.5.0",
-    "react": "^19.0.0",
+    "react": "^19.2.3",
     "react-chartjs-2": "^5.3.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",

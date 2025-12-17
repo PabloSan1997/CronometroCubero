@@ -3,6 +3,7 @@ services:
 
   cuborrubikcronometro:
     build: .
+    image: servicecube-cuborrubikcronometro
     restart: always
     env_file: ./.env
     ports:
